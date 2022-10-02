@@ -6,7 +6,7 @@ import { getMeses } from '../../services/getMeses'
 const Months = (props) => {
 
          //const {meses}= props.route.params
-    const [loading, setLoading] = React.useState(true);
+        const [loading, setLoading] = React.useState(true);
          const [_meses, setMeses] = React.useState([]);
 
          useEffect(() => {

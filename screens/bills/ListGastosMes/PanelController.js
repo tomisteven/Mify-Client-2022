@@ -5,9 +5,6 @@ import ItemPanelController from "./ItemPanelController";
 
 export default function PanelController({gastoTotal, saldoTotal, ahorro}) {
 
-    console.log("gastoTotal", gastoTotal);
-    console.log("saldoTotal", saldoTotal);
-    console.log("ahorro", ahorro);
     return (
         <View style={styles.container}>
             <ItemPanelController title={"Gasto Total"} value={gastoTotal} />

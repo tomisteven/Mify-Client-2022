@@ -4,38 +4,50 @@ import Title from "../../home/Title";
 import Mes from "./Mes";
 import ItemListGasto from "./ItemListGasto";
 import PanelController from "./PanelController";
+import { useEffect } from "react";
+import { getMeses } from "../../../services/getMeses";
 
 export default function ListMesesGasto(props) {
     
     const {mesSelected, data} = props.route.params
-    //console.log("mesSelected", mesSelected);
+    const [loading, setLoading] = React.useState(true);
+    const [_meses, setMeses] = React.useState([]);
+
+    useEffect(() => {
+        getMeses().then((data) => {setMeses(data); setLoading(false)})
+    }, [mesSelected, loading])
+
+    const updateMeses = () => {
+        setLoading(true)
+        getMeses().then((data) => {setMeses(data) ; setLoading(false)})
+    }
     
-    if(typeof data == "undefined"){
+    if(typeof _meses == "undefined" || _meses.length == 0){
         return (
             <View style={styles.container}>
-                <ActivityIndicator size="large" color="#fff" />
+                <ActivityIndicator style={{marginTop:250}} size="large" color="#fff" />
             </View>
         )
     }
-  
+    
+    
 
     return (
 
         <View style={styles.container}>
             <Title nombre={"Tomas"} />
-            <Mes mes={data[mesSelected].mes} year={new Date().getFullYear()} />
+            <Mes mes={_meses[mesSelected].mes} year={new Date().getFullYear()} />
             <ScrollView>
-
             {
-                data[mesSelected].consumos.length == 0 ? (
+                _meses[mesSelected].consumos.length == 0 ? (
                     <View style={styles.container}>
                         <Image style={styles.image} source={require("../../../assets/wallet.png")} />
                         <Text style={styles.text}>No hay gastos</Text>
                     </View>
                 ) : (
-                    data[mesSelected].consumos.map((consumo, index) => {
+                    _meses[mesSelected].consumos.map((consumo, index) => {
                         return (
-                            <ItemListGasto key={index} consumo={consumo} />
+                            <ItemListGasto update={updateMeses} key={index} consumo={consumo} mes_id={_meses[mesSelected]._id} />
                         )
                     })
                 )

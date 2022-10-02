@@ -1,8 +1,34 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Image, TouchableHighlight} from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Image, TouchableHighlight, Alert} from 'react-native'
+
 import { parseDate } from "../../../services/parseDate";
 
-export default function ItemListGasto({consumo}) {
+export default function ItemListGasto({consumo, mes_id, update}) {
+    const [loading, setLoading] = React.useState(false);
+
+    if(typeof consumo == "undefined" || loading){
+        return (
+            <View style={styles.container}>
+                <ActivityIndicator size="large" color="#fff" />
+            </View>
+        )
+    }
+     
+    const deleteItem = async (id) => {
+        setLoading(true)
+        const res  = await fetch(`https://tablecash.herokuapp.com/Cash/62f7417af39bf61aba34095d/${mes_id}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+
+        })
+        await res.json();
+        await update();
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+    }
     
     return ( 
         <View key={consumo._id} style={styles.list_view}>
@@ -21,7 +47,7 @@ export default function ItemListGasto({consumo}) {
                 <View style={styles.list_precio_item}>
                     <Text style={styles.list_precio_text}>${consumo.precio}</Text> 
                 </View>
-                <TouchableHighlight style={styles.list_delete_item}>
+                <TouchableHighlight onPress={()=>{deleteItem(consumo._id)}} style={styles.list_delete_item}>
                     <Image style={styles.list_img_delete} source={require('../../../assets/delete.png')} />
                 </TouchableHighlight>
             </View>
@@ -29,6 +55,7 @@ export default function ItemListGasto({consumo}) {
 }
 
 const styles = StyleSheet.create({
+    
     list_view: {
         width: '95%',
         height: 70,
@@ -60,7 +87,7 @@ const styles = StyleSheet.create({
         width: '45%',
     },
     list_precio_text: {
-        fontSize: 22,
+        fontSize: 18,
         fontFamily: 'slab',
     },
     list_item_text: {

@@ -1,0 +1,18 @@
+export const ADD_CONSUMO = "ADD_CONSUMO";
+export const GET_ALL_DATA = "GET_ALL_DATA";
+
+
+export const GET_MESES = "GET_MESES";
+export const ADD_SALDO_1000_INCREMENTO = "ADD_SALDO_1000_INCREMENTO";
+export const ADD_SALDO_1000_DECREMENTO = "ADD_SALDO_1000_DECREMENTO";
+
+
+
+/* reducer type */
+export const REDUCER_ALL_DATA = "REDUCER_ALL_DATA";
+export const REDUCER_MESES = "REDUCER_MESES";
+
+export const TYPES = {
+    REDUCER_ALL_DATA : "REDUCER_ALL_DATA",
+    REDUCER_MESES : "REDUCER_MESES",
+}
